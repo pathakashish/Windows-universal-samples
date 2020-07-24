@@ -17,11 +17,10 @@ jobs:
 
       - name: MSBuild CS
         working-directory: Samples/CameraFrames/cs
-        run: msbuild CameraFrames.sln /t:Build /p:Configuration=Debug /p:Platform="Any CPU"
-
+        run: msbuild CameraFrames.sln /t:Build /p:Configuration=Debug /p:Platform=x86
       - name: MSBuild Cpp
         working-directory: Samples/CameraFrames/cpp
-        run: msbuild CameraFrames.sln /t:Build /p:Configuration=Debug /p:Platform="Any CPU"
+        run: msbuild CameraFrames.sln /t:Build /p:Configuration=Debug /p:Platform=x86
         
       - uses: actions/upload-artifact@v2
         with:
