@@ -14,10 +14,22 @@ jobs:
         
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.1
+      
+      - uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: '5.x'
+      - uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+      - name: NuGet Restore
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: nuget restore MyProject.sln
 
       - name: MSBuild CS
         working-directory: ./
-        run: msbuild Samples/CameraFrames/cs/CameraFrames.sln /t:Build /p:Configuration=Debug /p:Platform=x86 /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackages\\" /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundlePlatforms="$(Build.BuildPlatform)" /p:AppxBundle=Always
+        run: msbuild Samples/CameraFrames/cs/CameraFrames.sln /t:Build /p:Configuration=Debug /p:Platform=x86
 
 #       - name: MSBuild Cpp
 #         working-directory: ./
