@@ -12,12 +12,17 @@ jobs:
       steps:
       - uses: actions/checkout@v2
         
-      - name: Setup MSBuild.exe
-        uses: warrenbuckley/Setup-MSBuild@v1
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.1
 
-      - name: MSBuild
+      - name: MSBuild CS
         working-directory: Samples/CameraFrames/cs
-        run: msbuild CameraFrames.csproj
+        run: msbuild CameraFrames.sln /t:Build /p:Configuration=Debug;Platform=Win32
+
+      - name: MSBuild Cpp
+        working-directory: Samples/CameraFrames/cpp
+        run: msbuild CameraFrames.sln /t:Build /p:Configuration=Debug;Platform=Win32
+        
       - uses: actions/upload-artifact@v2
         with:
           name: CameraFrameSample
