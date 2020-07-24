@@ -17,7 +17,7 @@ jobs:
       
       - uses: nuget/setup-nuget@v1
         with:
-          nuget-version: '5.x'
+          nuget-version: 'latest'
       - uses: actions/cache@v1
         id: cache
         with:
@@ -25,7 +25,8 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
       - name: NuGet Restore
         if: steps.cache.outputs.cache-hit != 'true'
-        run: nuget restore MyProject.sln
+        working-directory: ./
+        run: nuget restore Samples/CameraFrames/cs/CameraFrames.sln
 
       - name: MSBuild CS
         working-directory: ./
